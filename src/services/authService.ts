@@ -5,18 +5,18 @@ import AuthRepository  from "../repositories/authRepository";
 
 class AuthService {
     static register = async (data: any) => {
-        const { name, email, password } = data;
-        const existingUser = await AuthRepository.findByEmail(email);
-        if (existingUser) {
-            throw new Error("User already exists");
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const validatedData = registerSchema.safeParse({ name, email, password });
-        if (!validatedData.success) {
-            throw new Error(validatedData.error.message);
-        }
-        return AuthRepository.register({ name, email, password: hashedPassword });
+    const validatedData = registerSchema.safeParse(data);
+    if (!validatedData.success) {
+        throw new Error(validatedData.error.message);
     }
+    const { name, email, password } = validatedData.data;
+    const existingUser = await AuthRepository.findByEmail(email);
+    if (existingUser) {
+        throw new Error("User already exists");
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return AuthRepository.register({ name, email, password: hashedPassword });
+}
 
     static login = async (data: any) => {
         const { email, password } = data;
