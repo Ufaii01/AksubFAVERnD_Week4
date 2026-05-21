@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { registerSchema } from "../validations/authValidation";
 import AuthRepository  from "../repositories/authRepository";
-import { prisma } from "../prisma";
 
 class AuthService {
     static register = async (data: any) => {

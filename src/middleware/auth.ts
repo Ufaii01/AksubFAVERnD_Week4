@@ -11,7 +11,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     return unauthorized(res, "Need Bearer token in Authorization header");
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1]!;
 
   jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
     if (err) {
