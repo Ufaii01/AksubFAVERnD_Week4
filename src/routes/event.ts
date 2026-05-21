@@ -19,3 +19,5 @@ eventRouter.delete('/events/:id', authenticate, authorize('organizer', 'admin'),
 eventRouter.get('/admin/events', authenticate, authorize('admin'), EventController.getAllEvents);
 eventRouter.get('/admin/users', authenticate, authorize('admin'), EventController.getAllUsers);
 eventRouter.patch('/admin/users/:email', authenticate, authorize('admin'), EventController.updateUser);
+
+export default eventRouter;

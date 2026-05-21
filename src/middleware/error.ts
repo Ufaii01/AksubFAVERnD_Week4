@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express"
 import { ZodError } from "zod"
 import { internalError } from "../utils/response"
 
-const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     if(err === 400) {
         return res.status(400).json({
             success: false,
@@ -26,5 +26,3 @@ const errorHandler = (err: any, req: Request, res: Response, next: NextFunction)
 
     return internalError(res, err.message || "Internal Server Error");
 }
-
-export default errorHandler
