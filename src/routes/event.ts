@@ -6,7 +6,7 @@ import { rateLimiter } from '../middleware/rateLimiter';
 const eventRouter = Router();
 
 eventRouter.use(rateLimiter);
-// attendee
+// all
 eventRouter.get('/events', authenticate, EventController.getAllEvents);
 eventRouter.get('/event-detail/:id', authenticate, EventController.getEventDetailById);
 

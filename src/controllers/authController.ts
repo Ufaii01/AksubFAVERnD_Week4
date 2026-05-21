@@ -5,7 +5,7 @@ import { ok, created, fail } from "../utils/response";
 class AuthController {
     static register = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const result = AuthService.register(req.body);
+            const result = await AuthService.register(req.body);
             return created(res, result, "User registered successfully");
         } catch (error) {
             next(error);
@@ -14,7 +14,7 @@ class AuthController {
 
     static login = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const result = AuthService.login(req.body);
+            const result = await AuthService.login(req.body);
             return ok(res, result, "User logged in successfully");
         } catch (error) {
             next(error);
