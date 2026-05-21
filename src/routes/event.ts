@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { authenticate, authorize, isEventOwner } from '../middleware/auth';
 import EventController from '../controllers/eventController';
+import rateLimiter from '../middleware/rateLimiter';
 
 const eventRouter = Router();
 
-
+eventRouter.use(rateLimiter);
 // attendee
 eventRouter.get('/events', authenticate, EventController.getAllEvents);
 eventRouter.get('/event-detail/:id', authenticate, EventController.getEventDetailById);
