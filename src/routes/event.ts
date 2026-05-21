@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { authenticate, authorize, isEventOwner } from '../middleware/auth';
+import { authenticate, authorize } from '../middleware/auth';
 import EventController from '../controllers/eventController';
 import { rateLimiter } from '../middleware/rateLimiter';
+import { isEventOwner } from '../middleware/eventCheck';
 
 const eventRouter = Router();
 
