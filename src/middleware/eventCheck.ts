@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { unauthorized, forbidden } from "../utils/response";
-import { prisma } from "../prisma";
+import { forbidden } from "../utils/response";
+import EventRepository from "../repositories/eventRepository";
 
 export const isEventOwner = async (req: Request, res: Response, next: NextFunction) => {
   const eventId = req.params.id;
   const userId = req.user?.id;
 
-  const event = await prisma.event.findUnique({ where: { id: Number(eventId) } });
+  const event = await EventRepository.findById(Number(eventId));
 
   if (!event) {
     return res.status(404).json({ message: "Event not found" });

@@ -2,17 +2,18 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { registerSchema } from "../validations/authValidation";
 import AuthRepository  from "../repositories/authRepository";
+import AppError from "../utils/appError";
 
 class AuthService {
     static register = async (data: any) => {
         const validatedData = registerSchema.safeParse(data);
         if (!validatedData.success) {
-            throw new Error(validatedData.error.message);
+            throw new AppError(validatedData.error.message, 400);
         }
         const { name, email, password } = validatedData.data;
         const existingUser = await AuthRepository.findByEmail(email);
         if (existingUser) {
-            throw new Error("User already exists");
+            throw new AppError("User already exists", 409);
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         return AuthRepository.register({ name, email, password: hashedPassword });
@@ -22,12 +23,12 @@ class AuthService {
         const { email, password } = data;
         const existingUser = await AuthRepository.findByEmail(email);
         if (!existingUser) {
-            throw new Error("Invalid email");
+            throw new AppError("Invalid email", 401);
         }
 
         const isPasswordValid = await bcrypt.compare(password, existingUser.password);
         if (!isPasswordValid) {
-            throw new Error("Invalid password");
+            throw new AppError("Invalid password", 401);
         }
 
         const token = jwt.sign(

@@ -70,7 +70,7 @@ class EventController {
     static updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userEmail = req.params.email as string;
-        const userRole = req.body;
+        const { role: userRole } = req.body;
 
         if (!userEmail) {
             return fail(res, "Email is required", 400);
@@ -88,6 +88,16 @@ class EventController {
         const updatedUser = await EventService.updateUser(userEmail, userRole);
         return ok(res, updatedUser, "User updated successfully");
 
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    static publishEvent = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = Number(req.params.id);
+            const updatedEvent = await EventService.publishEvent(id);
+            return ok(res, updatedEvent, "Event published successfully");
         } catch (error) {
             next(error);
         }
